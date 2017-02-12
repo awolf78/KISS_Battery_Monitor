@@ -12,7 +12,7 @@ See the WIKI for more detailed information and screenshots on installation, and 
 * OPEN TX 2.1 Firmware on Taranis
 
 # INSTALLATION:
-Download the latest release from the https://github.com/DynamikArray/KISS_Battery_Monitor/releases and place the file (KISSdata.lua) in the following directory on the SD_CARD of your Taranis.
+Download the latest release from the https://github.com/DynamikArray/KISS_Battery_Monitor/releases and place the file (KISS.lua) in the following directory on the SD_CARD of your Taranis.
 ``` SCRIPTS\TELEMETRY```  (if the TELEMETRY folder does not exist then you may need to create it).  
 
 ADDITIONAL STEPS FOR SOME USERS
@@ -32,5 +32,6 @@ On the main screen of the script, you may adjust the target mAh at anytime using
 
 Percentages Notification adjust may be accessed by pressing the [MENU] key.  On the Percentages Notification Screen you may adjust the Percentage using the +/- keys.  Pressing the [MENU] key again will bring you back to the main screen of this script.
 
-# Known Issues
+# KNOWN ISSUES
+- OpenTx2.2 imposed a 6 Charachter limit on the filename, so the .lua file needs to be renamed  - fixed in v.1.3.1
 - The Telemetry data is not visible for viewing after RSSI loss (ie pilot lands and disconnects battery from multi rotor) - fixed in v.1.3.0 
