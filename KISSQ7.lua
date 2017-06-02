@@ -18,6 +18,7 @@ local lastMahAlert = 0
 local lastKnownMah = 0
 
 local minV = 100.0
+local vfas = 0
 
 ----------------------------------------------------------------
 -- Custom Functions
@@ -114,6 +115,14 @@ end
 ----------------------------------------------------------------
 local function init_func()
   doMahAlert()
+  local f = io.open("/SCRIPTS/TELEMETRY/battery.txt", "r")
+  if not f then
+	f = io.open("/SCRIPTS/TELEMETRY/battery.txt", "w")
+	io.write(f,tostring(mahTarget).."   ")
+  else
+	mahTarget = tonumber(io.read(f, 5))
+  end
+  io.close(f)
 end
 --------------------------------
 
@@ -121,8 +130,15 @@ end
 ----------------------------------------------------------------
 --  Should handle any flow needed when the screen is NOT visible
 ----------------------------------------------------------------
+local function getVFAS()
+  vfas = getValue("VFAS")
+  if vfas < 0 then vfas = 0 end
+  if vfas > 0 and vfas < minV then minV = vfas end
+end
+
 local function bg_func()
   playAlerts()
+  getVFAS()
 end
 --------------------------------
 
@@ -189,6 +205,9 @@ local function run_func(event)
 	  if event == EVT_ENTER_BREAK then
 		if editMahMode == 1 then
 			editMahMode = 0
+			local f = io.open("/SCRIPTS/TELEMETRY/battery.txt", "w")
+			io.write(f,tostring(mahTarget).."   ")
+			io.close(f)
 		else
 			editMahMode = 1
 		end
@@ -217,11 +236,8 @@ local function run_func(event)
 		lcd.drawText(65, 41, mahTarget,INVERS)
 	  end
 	  
-	  local vfas = getValue("VFAS")
-	  if vfas < 0 then vfas = 0 end
+	  getVFAS()
 	  lcd.drawText(95, 41, round(vfas, 2).."V", SMLSIZE)
-	  
-	  if vfas > 0 and vfas < minV then minV = vfas end
 	  
 	  if(minV < 100) then
 		lcd.drawText(76, 49, "min:"..round(minV, 2).."V", SMLSIZE)
